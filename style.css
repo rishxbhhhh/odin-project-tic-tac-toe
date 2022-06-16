@@ -1,0 +1,172 @@
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    background-image: url("./waves.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.wrapper{
+    display: flex;
+    padding: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.card{
+    font-family: 'Trebuchet MS', sans-serif;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: rgba( 255, 255, 255, 0.25 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 20px );
+    -webkit-backdrop-filter: blur( 20px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+
+.card-top{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.card-title{
+    position: relative;
+    font-size: 36px;
+    color: cadetblue;
+}
+
+.card-title::after{
+    content: attr(data-text);
+    position: absolute;
+    left: -5px;
+    top: -3px;
+    color: antiquewhite;
+    font-size: 36px;
+}
+
+.choice{
+    width: 100px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    margin: 2rem;
+    color: darkgray;
+    font-weight: 400;
+}
+
+.reset{
+    background-color: dimgray;
+}
+
+.reset:hover{
+    position: relative;
+    border: 1px solid grey;
+    color: black;
+    cursor: pointer;
+}
+
+.reset:active{
+    background-color: greenyellow;
+    border: 2px solid greenyellow;
+    color: green;
+}
+
+/* .choice:active{
+    background-color: greenyellow;
+    border: 2px solid greenyellow;
+    color: green;
+} */
+/* 
+.choice-x{
+    background-color: dimgray;
+    color: whitesmoke;
+}
+
+.choice-y{
+    background-color: whitesmoke;
+    color: black;
+} */
+
+.board{
+    margin-top: 1rem;
+    width: 300px;
+    height: 300px;
+    border-collapse: collapse;
+}
+
+td{
+    width: 50px;
+    height: 50px;
+    font-size: 36px;
+    text-align: center;
+}
+
+#ele22{
+    border: 1px solid gray;
+}
+#ele11{
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+}
+#ele13{
+    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
+}
+#ele31{
+    border-top: 1px solid gray;
+    border-right: 1px solid gray;
+}
+#ele33{
+    border-top: 1px solid gray;
+    border-left: 1px solid gray;
+}
+
+#ele12{
+    border-left: 1px solid gray;
+}
+
+@media screen and (max-width: 1200px){
+    body{
+        background-image: url("./waves.jpg");
+        background-repeat: repeat-y;
+    }
+}
+
+@media screen and (max-width: 850px){
+    .choice{
+        width: 300px;
+        border-radius: 5px;
+        margin: 0.3rem 3rem;
+    }
+
+    .card-top{
+        flex-direction: column;
+    }
+
+    
+}
+
+td:hover{
+    position: relative;
+    top: 0;
+    left: 0;
+    background-color: lightgray;
+    cursor: grab;
+}
+
+td:active{
+    background-color: dimgray;
+    cursor: grabbing;
+}
