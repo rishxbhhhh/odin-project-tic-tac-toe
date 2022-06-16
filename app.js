@@ -1,147 +1,207 @@
-const card = document.getElementsByClassName("card");
-const GameBoard = (() => {
-  // null is 'empty', 0 is 'O' and 1 is 'X'
-  const grid = [
-    [null, null, null],
-    [null, null, null],
-    [null, null, null],
-  ];
+const gameBorad = (function () {
+  const board = [];
+  const player1 = { score: 0 };
+  const player2 = { score: 0 };
 
-  const valueAt = (i, j) => {
-    if (grid[i][j] === null) {
-      return "null";
-    }
-    if (grid[i][j] === 0) {
-      return "O";
-    }
-    if (grid[i][j] === 1) {
-      return "X";
-    }
-  };
+  let currentPlayer = player1;
 
-  const setValue = (i, j, k) => {
-    if (k === null) {
-      grid[i][j] = null;
-    }
-    if (k === 0) {
-      grid[i][j] = 0;
-    }
-    if (k === 1) {
-      grid[i][j] = 1;
-    } else {
-      return 0;
-    }
-  };
+  function setPlayersInfo(p1,p2) {
+    player1.name = p1.getName();
+    player1.symbol = p1.getSymbol();
 
-  const resetGrid = () => {
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        setValue(i, j, null);
-      }
-    }
-  };
+    player2.name = p2.getName();
+    player2.symbol = p2.getSymbol();
 
-  const printGrid = () => {
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        console.log(valueAt(i, j));
-        // console.log("\t");
-      }
-      // console.log("\n\n");
-    }
-  };
-
-  const getGrid = () => {
-    return grid;
-  };
-
-  const setGrid = (x) => {
-    grid = x;
+    displayController.renderPlayersInfo(player1, player2);
+    displayController.updateTurn(currentPlayer);
+    const boardContainer = displayController.renderBoard(board);
+    activateBoard(boardContainer);
   }
-  return { getGrid, setGrid, printGrid, resetGrid };
+
+  function resetBoard() {
+    for (let i = 0; i < board.length; i += 1) {
+      board[i] = false;
+    }
+
+    currentPlayer = currentPlayer === player1 ? player2 : player1;
+
+    displayController.updateTurn(currentPlayer);
+    const boardContainer = displayController.renderBoard(board);
+    activateBoard(boardContainer);
+  }
+
+  function activateBoard(boardDOM) {
+    const squares = boardDOM.querySelectorAll(".board span");
+    squares.forEach((square) => {
+      square.addEventListener("click", handleClick);
+    });
+  }
+
+  function isWin() {
+    for (let i = 0; i < 9; i += 3) {
+      if (board[i] && board[i] === board[i + 1] && board[i + 2] === board[i + 1]) {
+        return true;
+      }
+    }
+
+    for (let i = 0; i < 9; i += 1) {
+      if (board[i] && board[i] === board[i + 3] && board[i + 6] === board[i + 3] ) {
+        return true;
+      }
+    }
+
+    if (board[0] && board[0] === board[4] && board[8] === board[4]) {
+      return true;
+    }
+
+    if (board[2] && board[2] === board[4] && board[6] === board[4]) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function isDraw() {
+    return (
+      board[0] &&
+      board[1] &&
+      board[2] &&
+      board[3] &&
+      board[4] &&
+      board[5] &&
+      board[6] &&
+      board[7] &&
+      board[8]
+    );
+  }
+
+  function handleClick(event) {
+    const index = Number(event.target.getAttribute("data-index"));
+
+    if (board[index]) {
+      console.log("[Warning] cannot edit the previous move!")
+    } else {
+      board[index] = currentPlayer.symbol;
+      const boardContainer = displayController.renderBoard(board);
+      if (isWin()) {
+        displayController.congrats(currentPlayer);
+        displayController.renderPlayersInfo(player1, player2);
+      } else if (isDraw()) {
+        displayController.showDraw();
+      } else {
+        currentPlayer = currentPlayer === player1 ? player2 : player1;
+        displayController.updateTurn(currentPlayer);
+        activateBoard(boardContainer);
+      }
+    }
+  }
+
+  return { setPlayersInfo, resetBoard };
 })();
 
-function insert(i) {
-  if (i == null) {
-    return "";
+const displayController = (function () {
+
+  const boardHolder = document.querySelector(".grid-container .board");
+  const resetBtn = document.querySelector(".reset");
+  const resetButton = document.querySelector(".reset");
+
+  const p1NameHolder = document.querySelector('#player1-info .info .name');
+  const p2NameHolder = document.querySelector('#player2-info .info .name');
+  const p1SymbolHolder = document.querySelector('#player1-info .info .symbol');
+  const p2SymbolHolder = document.querySelector('#player2-info .info .symbol');
+  const p1Score = document.querySelector('#player1-info .score span');
+  const p2Score = document.querySelector('#player2-info .score span');
+  
+  const winingStatus = document.querySelector(".message2 .winning-status");
+  const turnContainer = document.querySelector(".message2 .turn");
+  const turnInContainer = document.querySelector(".message2 .turn span");
+
+  resetBtn.addEventListener("click", resetGame);
+
+  function resetGame() {
+    winingStatus.classList.add("d-none");
+    resetBtn.classList.add("d-none");
+    turnContainer.classList.remove("d-none");
+    gameBorad.resetBoard();
   }
-  if (i == 0) {
-    return "O";
+
+
+  function renderBoard(board) {
+    boardHolder.innerHTML = `<span data-index="0">${board[0] ? board[0] : ''}</span>
+      <span data-index="1" class="middle-y">${board[1] ? board[1] : ''}</span>
+      <span data-index="2">${board[2] ? board[2] : ''}</span>
+      <span data-index="3" class="middle-x">${board[3] ? board[3] : ''}</span>
+      <span data-index="4" class="middle-y middle-x">${board[4] ? board[4] : ''}</span>
+      <span data-index="5" class="middle-x">${board[5] ? board[5] : ''}</span>
+      <span data-index="6">${board[6] ? board[6] : ''}</span>
+      <span data-index="7" class="middle-y">${board[7] ? board[7] : ''}</span>
+      <span data-index="8">${board[8] ? board[8] : ''}</span>`;
+    return boardHolder;
   }
-  if (i == 1) {
-    return "X";
+
+  function renderPlayersInfo(p1, p2) {
+    p1NameHolder.textContent = p1.name;
+    p1SymbolHolder.textContent = p1.symbol;
+    p1Score.textContent = p1.score;
+
+    p2NameHolder.textContent = p2.name;
+    p2SymbolHolder.textContent = p2.symbol;
+    p2Score.textContent = p2.score;
   }
-}
 
-function render() {
-  ele11.innerText = insert(grid[0][0]);
-  ele12.innerText = insert(grid[0][1]);
-  ele13.innerText = insert(grid[0][2]);
-  ele21.innerText = insert(grid[1][0]);
-  ele22.innerText = insert(grid[1][1]);
-  ele23.innerText = insert(grid[1][2]);
-  ele31.innerText = insert(grid[2][0]);
-  ele32.innerText = insert(grid[2][1]);
-  ele33.innerText = insert(grid[2][2]);
-}
 
-function activate(x) {
-  x.style.border = "3px solid darkgreen";
-  x.style.color = "black";
-}
-function deactivate(x) {
-  x.style.border = "none";
-}
-
-function inputHandler(x){
-
-}
-
-function Player1Turn(validMove, msg){
-
-}
-
-function Player2Turn(validMove, msg){
-
-}
-
-function initGame() {
-  const grid = GameBoard.getGrid();
-  const validMove = "X";
-  const ele11 = document.getElementById("ele11");
-  const ele12 = document.getElementById("ele12");
-  const ele13 = document.getElementById("ele13");
-  const ele21 = document.getElementById("ele21");
-  const ele22 = document.getElementById("ele22");
-  const ele23 = document.getElementById("ele23");
-  const ele31 = document.getElementById("ele31");
-  const ele32 = document.getElementById("ele32");
-  const ele33 = document.getElementById("ele33");
-  const player1 = {};
-  player1.name = "Rishabh";
-  // player1.name = prompt("Player1's Name (X): ");
-  player1.points = 0;
-  const player2 = {};
-  player2.name = "Saloni";
-  // player2.name = prompt("Player1's Name (O): ");
-  player2.points = 0;
-  const msg = document.querySelector(".message");
-  msg.innerText = `Game Started!... Click anywhere in grid!`;
-  const buttonx = document.querySelector(".choice-x");
-  const buttono = document.querySelector(".choice-y");
-  for(let i=0;i<3;i++){
-    for(let j=0;j<3;j++){
-      if((3*i+j)%2==0){
-        Player1Turn();
-      }
-      else{
-        Player2Turn();
-      }
-    }
+  function congrats(player) {
+    resetButton.classList.remove('d-none');
+    turnContainer.classList.add('d-none');
+    winingStatus.textContent = `${player.name} is the winner`;
+    winingStatus.classList.remove('d-none');
+    player.score += 1;
   }
-}
 
+  function showDraw() {
+    resetButton.classList.remove('d-none');
+    turnContainer.classList.add('d-none');
+    winingStatus.textContent = 'it\'s a draw';
+    winingStatus.classList.remove('d-none');
+  }
 
+  function showWarning() {
+    cellWarning.classList.remove('d-none');
 
+    setTimeout(() => {
+      cellWarning.classList.add('d-none');
+    }, 3000);
+  }
 
-initGame();
+  function updateTurn(player) {
+    turnInContainer.textContent = player.name + "'s";
+  }
+
+  return {
+    renderBoard,
+    renderPlayersInfo,
+    updateTurn,
+    showDraw,
+    congrats,
+    showWarning,
+  };
+}());
+const playerFactory = function (name, symbol) {
+  const getName = function () {
+    return name;
+  };
+
+  const getSymbol = function () {
+    return symbol;
+  };
+
+  return { getName, getSymbol };
+};
+
+let player1, player2;
+  let player1Name = prompt("Enter Player-1's name: ");
+  let player2Name = prompt("Enter Player-1's name: ");
+  let player1Symbol = "X", player2Symbol = "O";
+  player1 = playerFactory(player1Name, player1Symbol);
+  player2 = playerFactory(player2Name, player2Symbol);
+  gameBorad.setPlayersInfo(player1, player2);

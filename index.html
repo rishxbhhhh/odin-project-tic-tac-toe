@@ -19,26 +19,59 @@
           <button class="choice reset">RESET</button>
         </div>
         <hr width="100%" color="gray" size="1px"/>
-        <div class="message"></div>
+        <div class="message">
+          <div id="player1-info" class="w-100">
+            <div class="info">
+              <span class="symbol"></span>
+              <span class="name"></span>
+            </div>
+            <div class="score">
+              <h4>Score: <span></span></h4>
+            </div>
+          </div>
+          <div class="line">
+            <pre>                </pre>
+          </div>
+          <div id="player2-info" class="w-100">
+            <div class="info">
+              <span class="symbol"></span>
+              <span class="name"></span>
+            </div>
+            <div class="score">
+              <h4>Score: <span></span></h4>
+            </div>
+          </div>
+        </div>
+        
         <hr width="100%" color="gray" size="1px"/>
         <div class="grid-container">
-          <table class="board">
-            <tr>
-              <td id="ele11"></td>
-              <td id="ele12"></td>
-              <td id="ele13"></td>
-            </tr>
-            <tr>
-              <td id="ele21"></td>
-              <td id="ele22"></td>
-              <td id="ele23"></td>
-            </tr>
-            <tr>
-              <td id="ele31"></td>
-              <td id="ele32"></td>
-              <td id="ele33"></td>
-            </tr>
-          </table>
+          <div class="board">
+            
+              <span data-index="0"></span>
+              <span data-index="1" class="middle-y"></span>
+              <span data-index="2"></span>
+            
+            
+              <span data-index="3" class="middle-x"></span>
+              <span data-index="4" class="middle-y middle-x"></span>
+              <span data-index="5" class="middle-x"></span>
+            
+            
+              <span data-index="6"></span>
+              <span data-index="7" class="middle-y"></span>
+              <span data-index="8"></span>
+            
+          </div>
+        </div>
+        <hr width="100%" color="gray" size="1px">
+        <div class="message2">
+          <div class="cell-warning d-none">
+            Cell is already filled, try another one.
+          </div>
+          <div class="turn">
+            It's <span></span> turn!
+          </div>
+          <div class="winning-status d-none"></div>
         </div>
       </div>
     </div>

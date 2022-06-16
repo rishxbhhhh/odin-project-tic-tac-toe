@@ -83,59 +83,38 @@ body{
     color: green;
 }
 
-/* .choice:active{
-    background-color: greenyellow;
-    border: 2px solid greenyellow;
-    color: green;
-} */
-/* 
-.choice-x{
-    background-color: dimgray;
-    color: whitesmoke;
-}
 
-.choice-y{
-    background-color: whitesmoke;
-    color: black;
-} */
-
-.board{
-    margin-top: 1rem;
-    width: 300px;
-    height: 300px;
+.board {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    width: 250px;
+    height: 250px;
+    margin-bottom: 50px;
     border-collapse: collapse;
-}
+  }
+  
+  .board .middle-x {
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+  }
+  
+  .board .middle-y {
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+  }
 
-td{
-    width: 50px;
-    height: 50px;
-    font-size: 36px;
-    text-align: center;
-}
 
-#ele22{
-    border: 1px solid gray;
-}
-#ele11{
-    border-bottom: 1px solid gray;
-    border-right: 1px solid gray;
-}
-#ele13{
-    border-bottom: 1px solid gray;
-    border-left: 1px solid gray;
-}
-#ele31{
-    border-top: 1px solid gray;
-    border-right: 1px solid gray;
-}
-#ele33{
-    border-top: 1px solid gray;
-    border-left: 1px solid gray;
-}
+  .d-none {
+    display: none;
+  }
 
-#ele12{
-    border-left: 1px solid gray;
-}
+  .w-100 {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
 @media screen and (max-width: 1200px){
     body{
@@ -154,19 +133,37 @@ td{
     .card-top{
         flex-direction: column;
     }
-
-    
 }
 
-td:hover{
-    position: relative;
-    top: 0;
-    left: 0;
-    background-color: lightgray;
-    cursor: grab;
+
+.message{
+    display: flex;
+    flex-direction: row;
 }
 
-td:active{
-    background-color: dimgray;
-    cursor: grabbing;
+.message2{
+    display: flex;
+    flex-direction: column;
 }
+
+.message2 .turn{
+    margin-bottom: 10px;
+    font-size: 23px;
+    color: dimgray;
+    transition: all 0.8s ease-in;
+  }
+  
+  .message2 .winning-status {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 30px;
+    color: green;
+    text-align: center;
+  }
+  .board span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 40px;
+  }
