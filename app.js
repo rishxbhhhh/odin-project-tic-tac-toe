@@ -1,5 +1,5 @@
-const gameBorad = (function () {
-  const board = [];
+const gameBoard = (function () {
+  board = [];
   const player1 = { score: 0 };
   const player2 = { score: 0 };
 
@@ -19,15 +19,8 @@ const gameBorad = (function () {
   }
 
   function resetBoard() {
-    for (let i = 0; i < board.length; i += 1) {
-      board[i] = false;
-    }
-
-    currentPlayer = currentPlayer === player1 ? player2 : player1;
-
-    displayController.updateTurn(currentPlayer);
-    const boardContainer = displayController.renderBoard(board);
-    activateBoard(boardContainer);
+    board=[];
+    console.log("BOARD RESET!");
   }
 
   function activateBoard(boardDOM) {
@@ -79,7 +72,8 @@ const gameBorad = (function () {
     const index = Number(event.target.getAttribute("data-index"));
 
     if (board[index]) {
-      console.log("[Warning] cannot edit the previous move!")
+      console.log("[Warning] cannot edit the previous move!");
+      displayController.showWarning();
     } else {
       board[index] = currentPlayer.symbol;
       const boardContainer = displayController.renderBoard(board);
@@ -111,18 +105,23 @@ const displayController = (function () {
   const p2SymbolHolder = document.querySelector('#player2-info .info .symbol');
   const p1Score = document.querySelector('#player1-info .score span');
   const p2Score = document.querySelector('#player2-info .score span');
+  const score1 = document.querySelector("#player1-info .score");
+  const score2 = document.querySelector("#player2-info .score");
   
-  const winingStatus = document.querySelector(".message2 .winning-status");
+  const winingStatus = document.querySelector(".winning-status");
   const turnContainer = document.querySelector(".message2 .turn");
-  const turnInContainer = document.querySelector(".message2 .turn span");
+  const turnInContainer = document.querySelector("span.turn");
+  const cellWarning = document.querySelector(".cell-warning");
 
   resetBtn.addEventListener("click", resetGame);
 
   function resetGame() {
     winingStatus.classList.add("d-none");
-    resetBtn.classList.add("d-none");
-    turnContainer.classList.remove("d-none");
-    gameBorad.resetBoard();
+    score1.classList.add("d-none");
+    score2.classList.add("d-none");
+    gameBoard.resetBoard();
+    console.log("GAME RESET!");
+    initGame();
   }
 
 
@@ -153,8 +152,10 @@ const displayController = (function () {
   function congrats(player) {
     resetButton.classList.remove('d-none');
     turnContainer.classList.add('d-none');
-    winingStatus.textContent = `${player.name} is the winner`;
+    winingStatus.textContent = `${(player.name)?player.name:player.symbol} is the winner!`;
     winingStatus.classList.remove('d-none');
+    score1.classList.remove("d-none");
+    score2.classList.remove("d-none");
     player.score += 1;
   }
 
@@ -163,7 +164,9 @@ const displayController = (function () {
     turnContainer.classList.add('d-none');
     winingStatus.textContent = 'it\'s a draw';
     winingStatus.classList.remove('d-none');
-  }
+    score1.classList.remove("d-none");
+    score2.classList.remove("d-none");
+    }
 
   function showWarning() {
     cellWarning.classList.remove('d-none');
@@ -174,7 +177,7 @@ const displayController = (function () {
   }
 
   function updateTurn(player) {
-    turnInContainer.textContent = player.name + "'s";
+    turnInContainer.textContent = ((player.name)?player.name:player.symbol) + "'s";
   }
 
   return {
@@ -198,10 +201,16 @@ const playerFactory = function (name, symbol) {
   return { getName, getSymbol };
 };
 
-let player1, player2;
+function initGame(){
+  let player1, player2;
   let player1Name = prompt("Enter Player-1's name: ");
-  let player2Name = prompt("Enter Player-1's name: ");
+  let player2Name = prompt("Enter Player-2's name: ");
   let player1Symbol = "X", player2Symbol = "O";
   player1 = playerFactory(player1Name, player1Symbol);
   player2 = playerFactory(player2Name, player2Symbol);
-  gameBorad.setPlayersInfo(player1, player2);
+  gameBoard.setPlayersInfo(player1, player2);
+  const cellWarning = document.querySelector(".cell-warning");
+  cellWarning.classList.add("d-none");
+}
+
+initGame();

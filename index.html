@@ -13,19 +13,13 @@
       <div class="card">
         <h1 class="card-title" data-text="TIC TAC TOE">TIC TAC TOE</h1>
         <hr width="100%" color="gray" size="1px">
-        <div class="card-top">
-          <button class="choice choice-x">X</button>
-          <button class="choice choice-y">O</button>
-          <button class="choice reset">RESET</button>
-        </div>
-        <hr width="100%" color="gray" size="1px"/>
         <div class="message">
           <div id="player1-info" class="w-100">
             <div class="info">
-              <span class="symbol"></span>
+              <span class="symbol"></span>:
               <span class="name"></span>
             </div>
-            <div class="score">
+            <div class="score d-none">
               <h4>Score: <span></span></h4>
             </div>
           </div>
@@ -34,10 +28,10 @@
           </div>
           <div id="player2-info" class="w-100">
             <div class="info">
-              <span class="symbol"></span>
+              <span class="symbol"></span>:
               <span class="name"></span>
             </div>
-            <div class="score">
+            <div class="score d-none">
               <h4>Score: <span></span></h4>
             </div>
           </div>
@@ -65,13 +59,18 @@
         </div>
         <hr width="100%" color="gray" size="1px">
         <div class="message2">
-          <div class="cell-warning d-none">
-            Cell is already filled, try another one.
+          <div class="cell-warning" style="color: red; font-size: 10px">
+            [WARNING] Cell is already filled, try another one.
           </div>
           <div class="turn">
-            It's <span></span> turn!
+            It's <span class="turn"></span> turn!
           </div>
           <div class="winning-status d-none"></div>
+        </div>
+        <div class="card-bottom">
+          <button class="choice choice-x d-none">X</button>
+          <button class="choice choice-y d-none">O</button>
+          <button class="choice reset">RESET</button>
         </div>
       </div>
     </div>
